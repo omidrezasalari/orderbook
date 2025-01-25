@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: orderbook-wallex
+        container_name: orderbook-wallex
+        restart: unless-stopped
+        volumes:
+            - .:/var/www
+        environment:
+            - APP_ENV=local
+            - APP_DEBUG=true
+            - APP_KEY=base64:Uq7bzcBEyuk3+3idLY65noCO+kkwYHNlPrUr+SwcVpE=
+            - DB_CONNECTION=mysql
+            - DB_HOST=db
+            - DB_PORT=3306
+            - DB_DATABASE=orderBook
+            - DB_USERNAME=root
+            - DB_PASSWORD=root
+            - REDIS_HOST=redis
+            - REDIS_PORT=6379
+        depends_on:
+            - db
+            - redis
+
+    webserver:
+        image: nginx:stable-alpine
+        container_name: nginx
+        restart: unless-stopped
+        ports:
+            - "8080:80"
+        volumes:
+            - .:/var/www
+            - ./docker/nginx:/etc/nginx/conf.d
+        depends_on:
+            - app
+
+    db:
+        image: mysql:8.0
+        container_name: mysql
+        restart: unless-stopped
+        ports:
+            - "3301:3306"
+        environment:
+            MYSQL_DATABASE: orderBook
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - db_data:/var/lib/mysql
+
+    redis:
+        image: redis:alpine
+        container_name: redis
+        restart: unless-stopped
+        ports:
+            - "6371:6379"
+
+volumes:
+    db_data:
