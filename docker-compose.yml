@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: orderbook-wallex
+        container_name: orderbook-wallex
+        restart: unless-stopped
+        volumes:
+            - .:/var/www
+        environment:
+            - APP_ENV=local
+            - APP_DEBUG=true
+            - APP_KEY=base64:Uq7bzcBEyuk3+3idLY65noCO+kkwYHNlPrUr+SwcVpE=
+            - DB_CONNECTION=mysql
+            - DB_HOST=db
+            - DB_PORT=3306
+            - DB_DATABASE=orderBook
+            - DB_USERNAME=root
+            - DB_PASSWORD=root
+            - REDIS_HOST=redis
+            - REDIS_PORT=6379
+            - RABBITMQ_HOST=rabbitmq
+            - RABBITMQ_PORT=5672
+            - RABBITMQ_USERNAME=guest
+            - RABBITMQ_PASSWORD=guest
+            - RABBITMQ_VHOST=/
+        depends_on:
+            - db
+            - redis
+            - rabbitmq
+        networks:
+            - wallex-orders
+
+    webserver:
+        image: nginx:stable-alpine
+        container_name: nginx
+        restart: unless-stopped
+        ports:
+            - "8080:80"
+        volumes:
+            - .:/var/www
+            - ./docker/nginx:/etc/nginx/conf.d
+        depends_on:
+            - app
+        networks:
+            - wallex-orders
+
+    db:
+        image: mysql:8.0
+        container_name: mysql
+        restart: unless-stopped
+        ports:
+            - "3301:3306"
+        environment:
+            MYSQL_DATABASE: orderBook
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - db_data:/var/lib/mysql
+        networks:
+            - wallex-orders
+
+    redis:
+        image: redis:alpine
+        container_name: redis
+        restart: unless-stopped
+        ports:
+            - "6371:6379"
+        networks:
+            - wallex-orders
+
+    rabbitmq:
+        image: rabbitmq:management
+        container_name: rabbitmq
+        restart: unless-stopped
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        environment:
+            RABBITMQ_DEFAULT_USER: guest
+            RABBITMQ_DEFAULT_PASS: guest
+        volumes:
+            - rabbitmq_data:/var/lib/rabbitmq
+        networks:
+            - wallex-orders
+
+volumes:
+    db_data:
+    rabbitmq_data:
+
+networks:
+    wallex-orders:
