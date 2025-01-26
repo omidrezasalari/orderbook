@@ -2,7 +2,7 @@
 
 namespace App\Commands;
 
-class PlaceOrderCommand
+class PlaceAnOrderCommand
 {
     private string $type;
     private float $price;
@@ -17,7 +17,7 @@ class PlaceOrderCommand
 
     public function type(): string
     {
-        $this->type;
+        return $this->type;
 
     }
 
