@@ -22,9 +22,17 @@ services:
             - DB_PASSWORD=root
             - REDIS_HOST=redis
             - REDIS_PORT=6379
+            - RABBITMQ_HOST=rabbitmq
+            - RABBITMQ_PORT=5672
+            - RABBITMQ_USERNAME=guest
+            - RABBITMQ_PASSWORD=guest
+            - RABBITMQ_VHOST=/
         depends_on:
             - db
             - redis
+            - rabbitmq
+        networks:
+            - wallex-orders
 
     webserver:
         image: nginx:stable-alpine
@@ -37,6 +45,8 @@ services:
             - ./docker/nginx:/etc/nginx/conf.d
         depends_on:
             - app
+        networks:
+            - wallex-orders
 
     db:
         image: mysql:8.0
@@ -49,6 +59,8 @@ services:
             MYSQL_ROOT_PASSWORD: root
         volumes:
             - db_data:/var/lib/mysql
+        networks:
+            - wallex-orders
 
     redis:
         image: redis:alpine
@@ -56,6 +68,27 @@ services:
         restart: unless-stopped
         ports:
             - "6371:6379"
+        networks:
+            - wallex-orders
+
+    rabbitmq:
+        image: rabbitmq:management
+        container_name: rabbitmq
+        restart: unless-stopped
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        environment:
+            RABBITMQ_DEFAULT_USER: guest
+            RABBITMQ_DEFAULT_PASS: guest
+        volumes:
+            - rabbitmq_data:/var/lib/rabbitmq
+        networks:
+            - wallex-orders
 
 volumes:
     db_data:
+    rabbitmq_data:
+
+networks:
+    wallex-orders:
