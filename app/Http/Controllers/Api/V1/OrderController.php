@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\Order\PlaceOrderValidation;
+use App\Commands\PlaceAnOrderCommand;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PlaceAnOrderValidation;
 use App\Services\OrderService;
-use App\Services\OrderValidationService;
-use App\Commands\PlaceOrderCommand;
 use App\Transformers\OrderDataTransformer;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
 {
@@ -15,11 +16,16 @@ class OrderController extends Controller
         private readonly OrderService $orderService
     ) {}
 
-    public function placeOrder(PlaceOrderValidation $request, OrderDataTransformer $transformer): JsonResponse
-    {
-        $validatedData = $request->validationData();
+    /**
+     * @throws \Exception
+     */
 
-        $command = new PlaceOrderCommand(
+    public function placeAnOrder(PlaceAnOrderValidation $request,OrderDataTransformer $transformer): JsonResponse
+    {
+
+        $validatedData = $request->validated();
+
+        $command = new PlaceAnOrderCommand(
             $validatedData['type'],
             $validatedData['price'],
             $validatedData ['quantity']
@@ -30,7 +36,7 @@ class OrderController extends Controller
         return response()->json([
             'message' => 'Order placed successfully.',
             'order' => $transformer->transform($order)
-        ], 201);
+        ], Response::HTTP_CREATED);
     }
 }
 

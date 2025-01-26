@@ -14,25 +14,25 @@ class Order extends Model
 
     public function getId(): int
     {
-        return (int)$this->id;
+        return $this->id;
     }
     public function getType(): string
     {
-        return ucfirst($this->type);
+        return $this->type;
     }
 
     public function getPrice(): string
     {
-        return number_format($this->price, 2, '.', ',');
+        return $this->price;
     }
 
-    public function getQuantity(): string
+    public function getQuantity(): int
     {
         return $this->quantity;
     }
 
     public function getStatus(): string
     {
-        return ucfirst($this->status);
+        return $this->status;
     }
 }

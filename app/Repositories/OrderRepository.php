@@ -22,4 +22,15 @@ class OrderRepository implements OrderRepositoryInterface
     {
         return Order::find($id);
     }
+
+
+    public function update(Order $order, array $mapkeysWithValues): void
+    {
+        $order->update($mapkeysWithValues);
+    }
+
+    public function findByIds(array $ids): array
+    {
+        return Order::whereIn('id', $ids)->get()->toArray();
+    }
 }

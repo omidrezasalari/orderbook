@@ -6,7 +6,7 @@ class OrderLockConfig
 {
     private const STATUS_LOCKED = 'locked';
    private const KEY_PREFIX = 'order_lock_';
-    private const TTL = 10;
+    private const TTL = 4;
 
 
     public static function getLockKey(int $identifier): string
