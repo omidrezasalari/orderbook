@@ -86,7 +86,7 @@ final class OrderService
     /**
      * @throws \Exception
      */
-    private function matchBuyOrder(Order $buyOrder): void
+    public function matchBuyOrder(Order $buyOrder): void
     {
         while ($this->hasSellOrders()) {
             $topSellOrder = $this->getTopSellOrder();
