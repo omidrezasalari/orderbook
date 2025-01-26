@@ -1,0 +1,119 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This API allows users to place orders in the system.",
+    "version": "1.0.0",
+    "title": "Order API"
+  },
+  "host": "localhost:3030",
+  "basePath": "/api/v1",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/orders": {
+      "post": {
+        "summary": "Place an Order",
+        "description": "Allows users to place an order in the system.",
+        "operationId": "placeAnOrder",
+        "tags": [
+          "Orders"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "order",
+            "description": "Order data to be placed.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "type",
+                "price",
+                "quantity"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "description": "The type of the order (buy or sell).",
+                  "example": "buy"
+                },
+                "price": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "The price of the order.",
+                  "example": 150
+                },
+                "quantity": {
+                  "type": "integer",
+                  "description": "The quantity of the order.",
+                  "example": 10
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Order placed successfully.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Order placed successfully."
+                },
+                "order": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 12345
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "buy"
+                    },
+                    "price": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 150
+                    },
+                    "quantity": {
+                      "type": "integer",
+                      "example": 10
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Bad Request. Validation failed or missing required parameters.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "The 'price' field is required."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "An unexpected error occurred."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
