@@ -34,5 +34,20 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'rabbitmq' => [
+        'host' => env('RABBITMQ_HOST', 'localhost'),
+        'port' => env('RABBITMQ_PORT', 5672),
+        'username' => env('RABBITMQ_USERNAME', 'guest'),
+        'password' => env('RABBITMQ_PASSWORD', 'guest'),
+        'vhost' => env('RABBITMQ_VHOST', '/'),
+    ],
+    'redis' => [
+        'client' => env('REDIS_CLIENT', 'predis'),
+        'scheme' => 'tcp',
+        'host' => env('REDIS_HOST', 'localhost'),
+        'port' => env('REDIS_PORT', 6379),
+        'password' => env('REDIS_PASSWORD', null),
+        'database' => env('REDIS_DB', 0),
+    ],
 
 ];
