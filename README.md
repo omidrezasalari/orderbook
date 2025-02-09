@@ -1,4 +1,4 @@
-# Wallex - challenge - Orderbook 
+# Orderbook and Acme command
 
 This project provides an API for placing orders (buy/sell).
 
@@ -19,6 +19,18 @@ This project provides an API for placing orders (buy/sell).
 
    ```bash
    docker-compose up -d
+
+### Command Signature
+
+```bash
+php artisan acme:generate-request {filepath}
+```
+#### Arguments:
+
+* filepath (required): The path to the JSON input file containing insurance request data.
+
+
+
 
 The API will be available at http://localhost:3030.
 
