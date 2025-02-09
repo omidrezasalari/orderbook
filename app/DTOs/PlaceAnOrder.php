@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Commands;
+namespace App\DTOs;
 
-class PlaceAnOrderCommand
+class PlaceAnOrder
 {
     private string $type;
     private float $price;

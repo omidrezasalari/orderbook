@@ -6,7 +6,7 @@ use App\Models\Constants\OrderConstants;
 use App\Models\Constants\OrderLockConfig;
 use App\Services\OrderService;
 use App\Models\Order;
-use App\Commands\PlaceAnOrderCommand;
+use App\DTOs\PlaceAnOrder;
 use App\Repositories\OrderRepositoryInterface;
 use App\Contracts\CacheInterface;
 use App\Contracts\MessageBrokerInterface;
@@ -35,7 +35,7 @@ class OrderServiceTest extends TestCase
 
     public function testPlaceAnOrder(): void
     {
-        $command = new PlaceAnOrderCommand(OrderConstants::BUY_TYPE, 100, 10);
+        $command = new PlaceAnOrder(OrderConstants::BUY_TYPE, 100, 10);
         $order = new Order(['type' => OrderConstants::BUY_TYPE, 'price' => 100, 'quantity' => 10]);
 
         $this->orderRepositoryMock->shouldReceive('create')->once()

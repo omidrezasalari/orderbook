@@ -8,7 +8,7 @@ use App\Models\Constants\OrderConstants;
 use App\Models\Constants\OrderLockConfig;
 use App\Repositories\OrderRepositoryInterface;
 use App\Models\Order;
-use App\Commands\PlaceAnOrderCommand;
+use App\DTOs\PlaceAnOrder;
 use App\Events\OrderMatchedEvent;
 
 final class OrderService
@@ -23,7 +23,7 @@ final class OrderService
     /**
      * @throws \Exception
      */
-    public function placeAnOrder(PlaceAnOrderCommand $command): Order
+    public function placeAnOrder(PlaceAnOrder $command): Order
     {
         $order = $this->orderRepository->create([
             'type' => $command->type(),

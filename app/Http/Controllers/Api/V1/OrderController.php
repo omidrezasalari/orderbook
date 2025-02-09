@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Commands\PlaceAnOrderCommand;
+use App\DTOs\PlaceAnOrder;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PlaceAnOrderValidation;
 use App\Services\OrderService;
@@ -25,7 +25,7 @@ class OrderController extends Controller
 
         $validatedData = $request->validated();
 
-        $command = new PlaceAnOrderCommand(
+        $command = new PlaceAnOrder(
             $validatedData['type'],
             $validatedData['price'],
             $validatedData ['quantity']
