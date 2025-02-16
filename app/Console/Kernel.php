@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\FetchNewsCommand;
 use App\Console\Commands\ProcessOrders;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -15,6 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         ProcessOrders::class,
+        FetchNewsCommand::class,
     ];
 
     /**
@@ -26,6 +28,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('orders:process')->everyTwoSeconds();
+        $schedule->command('news:fetch')->everyTwoHours();
     }
 
     /**
